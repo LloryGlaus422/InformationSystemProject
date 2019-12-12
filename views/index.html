@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>iLISTa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+<style>
+    body {
+        font-size: 20px;
+        color: #1E2835;
+        background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSnRGkNn3rSyIW78WUsQOP-yElWNLAWtXiAbR4IVBspu6SQo6xr");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    #header {
+        text-align: center;
+        margin-top: 10%;
+        width: 50%;
+        padding: 10%;
+        margin-left: 27%;
+    }
+
+    #showForm {
+        margin-left: 80px;
+        margin-top: 15%;
+        padding: 4%;
+        background-color: #b3d9ff;
+        border: 4px;
+        width: 50%;
+    }
+
+    #add {
+        width: 20%;
+        font: 40px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    #tblItems {
+        text-align: center;
+        background: darkturquoise;
+        font: 20px sans-serif;
+        width: 80%;
+        margin-left: 130px;
+    }
+
+    #updateForm {
+        margin-left: 280px;
+        margin-top: 10%;
+        padding: 4%;
+        background-color: antiquewhite;
+        border: 4px;
+        width: 60%;
+        color: black;
+    }
+
+    #Ser{
+        background: darkturquoise;
+    }
+</style>
+
+<body>
+    <div id="header" class="card">
+        <h2>Enrich your shopping list wisely.
+        </h2><br>
+        <button id="createBtn" type="button" class="btn btn-info btn-lg">iLISTa</button>
+    </div>
+
+    <div id="form">
+        <center>
+
+            <div class="card" id="showForm" style="display:none;width : 400px;">
+                <center>
+                    <h3 class="card-header">Add New Item</h3>
+                </center>
+                <div>
+                    <form action="" class="form was-validated">
+                        <div class="form-group">
+                            <label for="itemLabel">Item:</label>
+                            <input type="text" class="form-control" name="item" placeholder="Enter Item " />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qtyLabel">Quantity:</label>
+                            <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" min=0
+                                step="1" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qtyLabel">Price:</label>
+                            <input type="number" class="form-control" name="price" placeholder="Enter Price" min=0
+                                step="1" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priLabel">Priority:</label>
+                            <input type="number" class="form-control" name="priority" placeholder="Enter Priority"
+                                min="1" max="3" required />
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button id="addItem" class="btn btn-primary">Save</button>
+                    <button id="cancel" class="btn btn-danger">Cancel</button>
+                </div>
+
+            </div>
+        </center>
+
+        <center>
+            
+            <div style="display:none;width : 400px; height:500px;margin-left: 350px; background-color: antiquewhite;"
+                id="updateForm">
+                <div class="card-header text-black" style="text-align: center;">Update Item</div>
+                <div class="card-body text-center">
+                    <form id="form" class="form was-validated">
+                        <input type="text" class="form-control" name="itemUpdate" placeholder="Name" value=" " autofocus
+                            required="">
+                        <br>
+                        <input type="number" class="form-control" name="quantityUpdate" placeholder="Quantity" value="0"
+                            min=0 required=""><br>
+                        <input type="number" class="form-control" name="priceUpdate" placeholder="Price" value="0" min=0
+                            required=""><br>
+                        <input type="number" class="form-control" name="priorityUpdate" placeholder="Priority" value="0"
+                            min="1" max="3" required="">
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button id="updateItem" class="btn btn-primary">UPDATE</button>
+                    <button id="updateCancel" class="btn btn-danger">CANCEL</button>
+                </div>
+            </div>
+
+        </center>
+        <div id="row" class="row">
+            <div id="price" class="card" style="width: 18rem;margin-top: 2%;margin-left: 20%; margin-bottom: 5%;">
+            <img style="margin-top: 3%;width: 50px;height: 25%;margin-left:40%;"
+                src="data:image/png;base64,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"
+                class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Number of Rows: <span id="amount">0</span></h5>
+                    <p class="card-text"></p>
+                    <div class="container">
+                    </div>
+                </div>
+            </div>
+            <div id="price" class="card" style="width: 18rem;margin-top: 2%;margin-left: 20%; margin-bottom: 5%;">
+            <img style=" width: 50px;height: 25%;margin-left:40%;margin-top: 3%"
+                src="data:image/png;base64,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"
+                
+                class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Balance: <span id="balance">0</span></h5>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <center>
+            <div class="col-sm-5">
+                <div id="Ser" class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Search Here</h5>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Search"
+                                value= " " autofocus>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </center>
+
+        <div class="container" style="display:inline;">
+            <div id="showTable">
+                <br>
+                <center>
+                    <button id="add" class="btn btn-info" data-toggle="modal" data-target="#myModal">Add
+                        Items</button>
+                    <br><br>
+                </center>
+
+                <table class="table text-center table-hover" id="tblItems">
+                    <thead style="color: brown;" class="thead thead-light">
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Priority</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("#form").hide();
+            var status = true;
+            function retrieveAllData() {
+                $.ajax({
+                    url: "item/retrieve/all",
+                    crossDomain: true,
+                    type: "GET",
+                    success: function (data) {
+                        $('tbody').empty();
+                        data.forEach(element => {
+                            addRow(element);
+                        });
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            }
+
+
+
+
+            var total = [];
+
+            retrieveAllData();
+
+            $("#check").click(function (e) {
+                var rowCount = $('tbody tr').length;
+                $("#amount").text(rowCount);
+                $('#balance').text(rowCount)
+            })
+
+            $("#createBtn").click(function (e) {
+                $("#form").show();
+                $('#header').hide();
+            })
+
+            $("#add").click(function (e) {
+                e.preventDefault();
+                $("#showForm").show();
+                $("#showTable").hide();
+                $("#row").hide();
+                $("#Ser").hide();
+
+
+            })
+
+            $("#cancel").on('click', function (e) {
+                e.preventDefault();
+                $("#showForm").hide();
+                $("#showTable").show();
+                $("#row").show();
+                $("#Ser").show();
+                let item = $('input[name="item"]').val('');
+                let quantity = $('input[name="quantity"]').val('');
+                let price = $('input[name="price"]').val('');
+                let priority = $('input[name="priority"]').val('');
+            })
+
+            $("#updateCancel").on('click', function (e) {
+                e.preventDefault();
+                $("#updateForm").hide();
+                $("#showTable").show();
+                $("#row").show();
+                $("#Ser").show();
+
+            })
+
+
+            $('input[name="search"]').on("keyup", function () {
+                var value = $(this).val();
+                $("table tr").each(function (index) {
+                    if (index !== 0) {
+                        $row = $(this);
+                        var id = $row.find("td:first").text();
+                        if (id.indexOf(value) !== 0) {
+                            $row.hide();
+                        }
+                        else {
+                            $row.show();
+                        }
+                    }
+                });
+            });
+
+
+            function addRow(data) {
+
+                var tr = $("<tr>"
+                    , {
+                        id: data._id,
+                        item: data.item,
+                        quantity: data.quantity,
+                        price: (data.price * data.quantity),
+                        priority: data.priority
+
+                    }
+                );
+                var btns = $("<div>").append($("<button>", {
+                    class: "btn btn-primary edit"
+                }).text("Edit"),
+                    $("<button>", {
+                        class: "btn btn-primary delete"
+                    }).text("Delete")
+                )
+
+
+                $(tr).append(
+                    $("<td>").text(data.item),
+                    $("<td>").text(data.quantity),
+                    $("<td>", { id: "pid" }).text(data.price * data.quantity),
+                    $("<td>").text(data.priority),
+                    $("<td>").append(btns)
+                ).appendTo($('tbody'));
+
+                total.push(data.price * data.quantity)
+
+                // var sum = 0;
+                // for (var i in total) { sum += total[i]; }
+                // var a = $("#amount").text(sum);
+
+
+            }
+
+            function checking() {
+                item = $('item').val();
+                quantity = $('quantity').val();
+                price = $('price').val();
+                priority = $('priority').val()
+
+                if (item == "") {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill the Item  field!',
+                    })
+                }
+                if (quantity == "") {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill the quantity  field!',
+                    })
+                }
+                if (price == "") {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill the price  field!',
+                    })
+                }
+                if (priority == "") {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill the priority  field!',
+                    })
+                }
+            }
+            $("#addItem").on('click', function (e) {
+                $("#row").show();
+                $("#Ser").show();
+                e.preventDefault(e);
+                var boolean = true;
+                var item = $('input[name="item"]');
+                var quantity = $('input[name="quantity"]');
+                var price = $('input[name="price"]');
+                var priority = $('input[name="priority"]');
+
+
+                $('input').each(function () {
+                    if ($(this).val() == "") {
+                        boolean = false;
+                    }
+                })
+
+
+                if (boolean == true) {
+                    $.ajax({
+                        url: "item/create",
+                        crossDomain: true,
+                        type: "POST",
+                        data: {
+                            item: item.val(),
+                            quantity: quantity.val(),
+                            price: price.val(),
+                            priority: priority.val()
+                        },
+                        success: function (data) {
+                            $("#showTable").show();
+                            $("#row").show();
+                            $("#Ser").show();
+
+                            addRow(data);
+                            Swal.fire({
+                                type: 'success',
+                                title: 'Success!',
+                                text: "Successfully added to database!",
+                                confirmButtonColor: '#3297a',
+                            })
+                        },
+                        error: function (e) {
+                            console.log(e);
+                            $("#showForm").show();
+                            $("#showTable").hide();
+                            $("#row").hide();
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'Item already exists in the list!',
+                            })
+                        }
+                    })
+                    item.val('');
+                    quantity.val('');
+                    price.val('');
+                    priority.val('');
+                    $("#showForm").hide();
+                    $("#showTable").show();
+                    $("#row").hide();
+                    $("#Ser").hide();
+
+                }
+                else {
+                    $("#row").hide();
+                    $("#Ser").hide();
+                    if (!$(item).val() && !$(quantity).val() && !$(price).val() && !$(priority).val()) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill All the fields!',
+                        })
+                    }
+                    else if (!$(item).val() && !$(quantity).val()) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill the Item and quantity fields!',
+                        })
+                    }
+
+                    else if (!$(item).val() && !$(price).val()) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill the Item quantity field!',
+                        })
+                    }
+
+                    else if (!$(item).val()) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill the Item  field!',
+                        })
+                    }
+                    else if (!$(quantity).val()) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill the quantity  field!',
+                        })
+                    }
+                    else if (!$(price).val()) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill the price  field!',
+                        })
+                    }
+                    else if (!$(priority).val()) {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill the priority  field!',
+                        })
+                    }
+                    else if (priority == "") {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill the priority  field!',
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill Empty fields!',
+                        })
+                    }
+                }
+
+            });
+
+
+            $(document).on("click", ".delete", function () {
+
+                let deleteprice = $(this).parent().parent().parent().attr("price")
+                deleteItem($(this).parent().parent().parent().attr("id"));
+
+                let current = $('#amount').text();
+                var sum = $("#amount").text(parseInt(current) - parseInt(deleteprice));
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+                        $(this).parent().parent().parent().fadeOut();
+                        swalWithBootstrapButtons.fire(
+                            'Deleted!',
+                            'The Item selected is successfully deleted.',
+                            'success'
+                        )
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            'Cancelled',
+                            'Your Item is not deleted and is safe',
+                            'error'
+                        )
+                    }
+                })
+
+            })
+
+            function deleteItem(id) {
+                $.ajax({
+                    url: "item/delete/" + id + "",
+                    crossDomain: true,
+                    type: "DELETE",
+                    success: function (data) {
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            }
+
+            var updateId;
+            $(document).on("click", ".edit", function () {
+                status = false;
+                console.log(retrieveOneItem($(this).parent().parent().parent().attr("id")));
+                updateId = $(this).parent().parent().parent().attr("id");
+                $("#updateForm").show();
+                $("#showTable").hide();
+                $("#row").hide();
+                $("#Ser").hide();
+
+
+
+            })
+
+            // $('#updateItem').attr("disabled", true);
+            $(document).ready(function () {
+                $('input').change(function () {
+                    // $('#updateItem').attr("disabled", true);
+                    var somethingChanged = false;
+                    if (somethingChanged = false) {
+                        $('#updateItem').attr("disabled", true);
+                    }
+                    else if (somethingChanged = true) {
+                        $('#updateItem').attr("disabled", false);
+                        $(document).on("click", "#updateItem", function () {
+                        updateItem(updateId);
+                        retrieveAllData();
+                        $("#updateForm").hide();
+                        $("#showTable").show();
+                        $("#row").show();
+                        $("#Ser").show();
+                    })
+                    }
+                    else{
+                         console.log(err)
+                    }
+
+                });
+            })
+
+            function updateItem(id) {
+                var item = $('input[name="itemUpdate"]');
+                var quantity = $('input[name="quantityUpdate"]');
+                var price = $('input[name="priceUpdate"]');
+                var priority = $('input[name="priorityUpdate"]');
+
+
+                $.ajax({
+                    url: "item/update/" + id + "",
+                    crossDomain: true,
+                    type: "PUT",
+                    data: {
+                        item: item.val(),
+                        quantity: quantity.val(),
+                        price: price.val(),
+                        priority: priority.val(),
+                    },
+                    success: function (data) {
+                        addRow(data)
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Success!',
+                            text: "Successfully updated to database!",
+                            confirmButtonColor: '#3297a',
+                        })
+                    },
+                    error: function (e) {
+                        console.log(e);
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Item already exists!',
+                        })
+
+                    }
+                })
+            }
+
+            function retrieveOneItem(id) {
+                $.ajax({
+                    url: "item/retrieve/" + id + "",
+                    crossDomain: true,
+                    type: "GET",
+                    success: function (data) {
+                        $('input[name="itemUpdate"]').val(data.item);
+                        $('input[name="quantityUpdate"]').val(data.quantity);
+                        $('input[name="priceUpdate"]').val(data.price);
+                        $('input[name="priorityUpdate"]').val(data.priority);
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            }
+        });
+    </script>
+</body>
+
+</html>
