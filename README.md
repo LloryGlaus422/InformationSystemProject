@@ -1,4 +1,5 @@
 # InformationSystemProject
+this system is listing the Items in the grocery. Target user will be tracking in-charge on a grocery
 
 # Installing express
 npm install express
