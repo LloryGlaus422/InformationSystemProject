@@ -1,13 +1,13 @@
 # InformationSystemProject
 
-#Installing express
+# Installing express
 npm install express
 
-#Installing MongoDB
+# Installing MongoDB
 npm install mongoose
 
-#Installing Unique Validator
+# Installing Unique Validator
 npm install mongoose-unique-validator
 
-#Running
+# Running
 node server
